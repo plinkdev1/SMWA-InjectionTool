@@ -1,0 +1,57 @@
+{
+  "manifest_version": 3,
+  "name": "SMWA Injection Tool — Solana Mobile",
+  "short_name": "SMWA Injection Tool",
+  "version": "1.0.0",
+  "description": "Injects the Mobile Wallet Adapter (MWA) into any Android Chrome page so Solana dApps can discover native wallet apps. Developer tool for MWA testing.",
+
+  "icons": {
+    "16":  "icons/icon16.png",
+    "48":  "icons/icon48.png",
+    "128": "icons/icon128.png"
+  },
+
+  "action": {
+    "default_popup":  "src/popup/popup.html",
+    "default_icon": {
+      "16":  "icons/icon16.png",
+      "48":  "icons/icon48.png",
+      "128": "icons/icon128.png"
+    },
+    "default_title": "SMWA Injection Tool"
+  },
+
+  "content_scripts": [
+    {
+      "matches":    ["https://*/*"],
+      "js":         ["src/content.js"],
+      "run_at":     "document_start",
+      "world":      "ISOLATED",
+      "all_frames": false
+    }
+  ],
+
+  "web_accessible_resources": [
+    {
+      "resources": ["src/inject.js"],
+      "matches":   ["https://*/*"]
+    }
+  ],
+
+  "permissions": [
+    "storage",
+    "scripting",
+    "activeTab"
+  ],
+
+  "host_permissions": [
+    "https://*/*"
+  ],
+
+  "background": {
+    "service_worker": "src/background.js",
+    "type": "module"
+  },
+
+  "minimum_chrome_version": "128"
+}
