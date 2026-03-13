@@ -20,11 +20,13 @@
  * ─────────────────────────────────────────────────────────────────────────────
  */
 
-import { execSync }   from 'child_process';
-import { readFileSync } from 'fs';
-import { fileURLToPath } from 'url';
-import { dirname, resolve } from 'path';
-import http from 'http';
+import { execSync }              from 'child_process';
+import { readFileSync }          from 'fs';
+import { fileURLToPath }         from 'url';
+import { dirname, resolve }      from 'path';
+import http                      from 'http';
+import { createRequire }         from 'module';
+const require = createRequire(import.meta.url);
 
 const __dir      = dirname(fileURLToPath(import.meta.url));
 const PAYLOAD_JS = resolve(__dir, '../payload/mwa-inject.js');
@@ -66,48 +68,27 @@ function httpGet(path) {
 // ── CDP via WebSocket ─────────────────────────────────────────────────────────
 function cdpExec(wsUrl, expression) {
   return new Promise((resolve, reject) => {
-    const id  = 1;
+    const { WebSocket } = require('ws');
+    const ws = new WebSocket(wsUrl);
+    const id = 1;
     const msg = JSON.stringify({
       id, method: 'Runtime.evaluate',
-      params: {
-        expression,
-        awaitPromise:  true,
-        returnByValue: true,
-      },
+      params: { expression, awaitPromise: true, returnByValue: true },
     });
-
-    // Use python3 websocket as reliable cross-platform CDP client
-    const pyScript = `
-import asyncio, json, sys
-
-async def run():
-    try:
-        import websockets
-    except ImportError:
-        print(json.dumps({"error": "pip install websockets"}))
-        return
-    async with websockets.connect(sys.argv[1]) as ws:
-        await ws.send(sys.argv[2])
-        while True:
-            raw = await ws.recv()
-            data = json.loads(raw)
-            if data.get('id') == 1:
-                print(json.dumps(data.get('result', {})))
-                return
-
-asyncio.run(run())
-`.trim();
-
-    try {
-      const out = execSync(
-        `python3 -c "${pyScript.replace(/\n/g, '; ').replace(/"/g, '\\"')}" "${wsUrl}" '${msg.replace(/'/g, "\\'")}'`,
-        { timeout: 20000, encoding: 'utf8' }
-      ).trim();
-      if (VERBOSE) log('CDP raw result:', out.slice(0, 300));
-      resolve(JSON.parse(out || '{}'));
-    } catch (e) {
-      reject(new Error('CDP exec failed: ' + e.message));
-    }
+    const timer = setTimeout(() => {
+      ws.terminate();
+      reject(new Error('CDP timeout after 20s'));
+    }, 20000);
+    ws.on('open', () => ws.send(msg));
+    ws.on('message', (data) => {
+      const parsed = JSON.parse(data.toString());
+      if (parsed.id === id) {
+        clearTimeout(timer);
+        ws.close();
+        resolve(parsed.result || {});
+      }
+    });
+    ws.on('error', (e) => { clearTimeout(timer); reject(e); });
   });
 }
 
