@@ -79,8 +79,8 @@ Tested live on **https://solana.com** — Android 10, Chrome 145, USB remote deb
 
 ### Live Test — solana.com (Android 10, Chrome 145)
 
-
-
+![DevTools proof](docs/proof-devtools.png)
+![Console detail](docs/proof-console.png)
 ---
 
 ## Quick Start
