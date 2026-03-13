@@ -4,20 +4,29 @@
   "description": "On-the-fly MWA Standard Wallet Injector — Chrome Extension + DevTools Payload + ADB Automation",
   "type": "module",
   "scripts": {
-    "bundle":          "node build.mjs",
-    "bookmarklet":     "node payload/bookmarklet.js",
-    "inject":          "node scripts/inject.mjs",
-    "inject:list":     "node scripts/inject.mjs --list",
-    "inject:verbose":  "node scripts/inject.mjs --verbose",
-    "ext:package":     "node scripts/package-extension.mjs"
+    "bundle": "node build.mjs",
+    "bookmarklet": "node payload/bookmarklet.js",
+    "inject": "node scripts/inject.mjs",
+    "inject:list": "node scripts/inject.mjs --list",
+    "inject:verbose": "node scripts/inject.mjs --verbose",
+    "ext:package": "node scripts/package-extension.mjs"
   },
   "dependencies": {
     "@solana-mobile/mobile-wallet-adapter-protocol": "2.2.5",
-    "@solana-mobile/wallet-standard-mobile": "0.4.4"
+    "@solana-mobile/wallet-standard-mobile": "0.4.4",
+    "jszip": "^3.10.1",
+    "ws": "^8.19.0"
   },
   "devDependencies": {
     "esbuild": "^0.24.2"
   },
   "license": "MIT",
-  "keywords": ["solana","mobile-wallet-adapter","mwa","wallet-standard","chrome-extension","android"]
+  "keywords": [
+    "solana",
+    "mobile-wallet-adapter",
+    "mwa",
+    "wallet-standard",
+    "chrome-extension",
+    "android"
+  ]
 }
