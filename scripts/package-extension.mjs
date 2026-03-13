@@ -31,7 +31,7 @@ try {
   zipCmd = `cd "${EXT_DIR}" && zip -r "${OUT_FILE}" . -x "*.DS_Store" "*.map" "__MACOSX/*"`;
 } catch (_) {
   // Fallback: use python zipfile
-  zipCmd = `python3 -c "
+  zipCmd = `python -c "
 import zipfile, os, sys
 ext_dir = '${EXT_DIR}'
 out = '${OUT_FILE}'
