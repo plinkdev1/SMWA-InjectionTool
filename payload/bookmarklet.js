@@ -29,14 +29,14 @@
  */
 
 // ── Config ────────────────────────────────────────────────────────────────────
-const GITHUB_USER = 'YOUR_GITHUB_USER'; // ← replace with your GitHub username
-const REPO        = 'mwa-injector';
+const GITHUB_USER = 'plinkdev1'; // ← replace with your GitHub username
+const REPO = 'SMWA-InjectionTool';
 const TAG         = 'v1.0.0';
 const BUNDLE_CDN  = `https://cdn.jsdelivr.net/gh/${GITHUB_USER}/${REPO}@${TAG}/payload/mwa-wallet-standard.bundle.js`;
 
 // ── Bookmarklet URI ───────────────────────────────────────────────────────────
 // Single line to paste as Android Chrome bookmark URL.
-const BOOKMARKLET_URI = `javascript:(async()=>{const T='[MWA]',U='${BUNDLE_CDN}';if(window.__mwa?.registered){console.warn(T,'Already injected. Delete window.__mwa to re-run.');return;}if(!window.isSecureContext){alert(T+' ERROR: Page must be HTTPS.');return;}console.log(T,'Loading bundle...');let m;try{m=await import(U);}catch(e){alert(T+' Load failed: '+e.message+'\n\nIf CSP error → use the Chrome Extension approach instead.');return;}const{registerMwa:R,createDefaultAuthorizationCache:A,createDefaultChainSelector:C,createDefaultWalletNotFoundHandler:W}=m;if(typeof R!=='function'){alert(T+' registerMwa() not found. Bundle may be outdated.');return;}try{R({appIdentity:{name:'MWA Injector',uri:window.location.origin,icon:'favicon.ico'},authorizationCache:A(),chains:['solana:mainnet','solana:devnet','solana:testnet','solana:localnet'],chainSelector:C(),onWalletNotFound:W(),remoteHostAuthority:undefined});window.__mwa={registered:true,version:'0.4.4',ts:new Date().toISOString()};window.dispatchEvent(new Event('wallet-standard:register-wallet'));console.log(T,'Registered OK — window.__mwa');alert('\\u2705 MWA Injected!\\n\\nOpen the dApp wallet picker to connect.');}catch(e){alert(T+' registerMwa() failed: '+e.message);console.error(T,e);}})();`;
+const BOOKMARKLET_URI = `javascript:(async()=>{const T='[MWA]',U='${BUNDLE_CDN}';if(window.__mwa?.registered){console.warn(T,'Already injected. Delete window.__mwa to re-run.');return;}if(!window.isSecureContext){alert(T+' ERROR: Page must be HTTPS.');return;}console.log(T,'Loading bundle...');let m;try{m=await import(U);}catch(e){alert(T+' Load failed: '+e.message+'\n\nIf CSP error → use the Chrome Extension approach instead.');return;}const{registerMwa:R,createDefaultAuthorizationCache:A,createDefaultChainSelector:C,createDefaultWalletNotFoundHandler:W}=m;if(typeof R!=='function'){alert(T+' registerMwa() not found. Bundle may be outdated.');return;}try{R({appIdentity:{name: 'SMWA Injection Tool',uri:window.location.origin,icon:'favicon.ico'},authorizationCache:A(),chains:['solana:mainnet','solana:devnet','solana:testnet','solana:localnet'],chainSelector:C(),onWalletNotFound:W(),remoteHostAuthority:undefined});window.__mwa={registered:true,version:'0.4.4',ts:new Date().toISOString()};window.dispatchEvent(new Event('wallet-standard:register-wallet'));console.log(T,'Registered OK — window.__mwa');alert('\\u2705 MWA Injected!\\n\\nOpen the dApp wallet picker to connect.');}catch(e){alert(T+' registerMwa() failed: '+e.message);console.error(T,e);}})();`;
 
 // ── Annotated source (same logic, readable) ───────────────────────────────────
 const ANNOTATED = `
@@ -86,7 +86,7 @@ javascript:(async () => {
   try {
     registerMwa({
       appIdentity: {
-        name: 'MWA Injector',
+        name: 'SMWA Injection Tool',
         uri:  window.location.origin,
         icon: 'favicon.ico',
       },
@@ -125,7 +125,7 @@ javascript:(async () => {
 // ── Print instructions when run via Node.js ───────────────────────────────────
 if (typeof process !== 'undefined' && process.argv[1]?.includes('bookmarklet')) {
   console.log('\n══════════════════════════════════════════════════════════════════');
-  console.log('  MWA Injector — Android Chrome Bookmarklet');
+  console.log('  SMWA Injection Tool — Android Chrome Bookmarklet');
   console.log('══════════════════════════════════════════════════════════════════');
   console.log('\nCopy the following line as your Android Chrome bookmark URL:\n');
   console.log(BOOKMARKLET_URI);
