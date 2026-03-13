@@ -107,6 +107,23 @@ After injection, jup.ag shows **"Continue to Mobile Wallet Adapter"** — that b
 
 ---
 
+## ✅ Tested dApps
+
+Confirmed working on **Samsung A55, Android 10, Chrome 145** via Method B (DevTools):
+
+| dApp | URL | Result | Notes |
+|------|-----|--------|-------|
+| Jupiter | jup.ag | ✅ Pass | Full MWA flow |
+| Orca | orca.so | ✅ Pass | Phantom, Backpack, Solflare, MWA appear |
+| Raydium | raydium.io | ✅ Pass | MWA appears (shown twice — Raydium quirk) |
+| Magic Eden | magiceden.io | ✅ Pass | MWA marked as "Installed" |
+| Drift | drift.trade | ✅ Pass | MWA marked as "Detected" — cleanest result |
+
+![Drift wallet picker — Mobile Wallet Adapter Detected](docs/drift-pass-wallet.png)
+
+> Full test results, device compatibility table, and all screenshots: [TESTED-DAPPS.md](TESTED-DAPPS.md)
+---
+
 ## How to Test Your Own dApp
 
 Use this tool to verify MWA works correctly in your Solana dApp — without modifying a single line of your code.
@@ -308,6 +325,15 @@ Requires Chrome 128+. Check `chrome://version`. Some Samsung devices have the ex
 adb kill-server && adb start-server && adb devices
 ```
 Check the "Allow USB debugging?" dialog on your Android screen.
+
+**Device or tab disappears from `chrome://inspect/#devices`**
+Unplug and replug the USB cable, unlock your phone and tap "Allow USB Debugging" if prompted,
+close and reopen Chrome on the phone, navigate to the dApp again, then refresh `chrome://inspect/#devices`.
+
+**`TypeError: i/t is not a function` in dApp console after injection**
+This is an internal dApp error, not caused by SMWA. Injection completes successfully regardless —
+look for `[MWA-INJECT] ✅ MWA wallet injected successfully!` to confirm. Close the DevTools window
+before opening a new session for a different dApp to avoid conflicts.
 
 See [TESTING.md](TESTING.md) for the full verification guide.
 
