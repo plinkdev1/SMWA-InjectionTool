@@ -81,6 +81,68 @@ Tested live on **https://solana.com** — Android 10, Chrome 145, USB remote deb
 
 ![DevTools proof](docs/proof-devtools.png)
 ![Console detail](docs/proof-console.png)
+
+---
+
+### Live Test — jup.ag · Jupiter DEX (Android 10, Chrome 145)
+
+Real Solana dApp. Real wallet picker. Real MWA connection. No code modified.
+
+**ADB Script — device detected and injection confirmed:**
+
+![ADB Steps 1-3](docs/proof-adb-steps.png)
+![ADB Step 4 Success](docs/proof-adb-success.png)
+
+**DevTools console — full green injection log on jup.ag:**
+
+![DevTools jup.ag](docs/proof-devtools-jup.png)
+![DevTools console detail](docs/proof-console-jup.png)
+
+**Phone — wallet picker responding to MWA after injection:**
+
+![Phone MWA picker](docs/proof-phone-mwa-picker.jpg)
+![Phone wallets](docs/proof-phone-wallets.jpg)
+
+After injection, jup.ag shows **"Continue to Mobile Wallet Adapter"** — that button only appears because the injection told Jupiter that MWA exists on this page. Tapping it opens the Android system wallet selector with Backpack, Phantom, Solflare and Jupiter all responding to the MWA connection request. Without this tool, none of that happens on a standard Android Chrome browser.
+
+---
+
+## How to Test Your Own dApp
+
+Use this tool to verify MWA works correctly in your Solana dApp — without modifying a single line of your code.
+
+**Method B (DevTools) — step by step:**
+
+1. Connect your Android phone to your PC via USB
+2. Enable USB debugging on your phone: **Settings → Developer Options → USB Debugging**
+3. Open **Chrome** on your phone and navigate to your dApp (must be HTTPS)
+4. On your PC, open Chrome and go to `chrome://inspect/#devices`
+5. Find your dApp tab under your device and click **inspect**
+6. In the **Console** tab that opens, open `payload/mwa-inject.js` from this repo and paste the entire contents
+7. Hit **Enter**
+
+**Your console should show every line green:**
+```
+[MWA-INJECT] ✅ Android confirmed: Android 10
+[MWA-INJECT] ✅ Secure context confirmed (HTTPS)
+[MWA-INJECT] ✅ Module loaded
+[MWA-INJECT] ✅ registerMwa() confirmed
+[MWA-INJECT] ✅ App identity: "SMWA Injection Tool" @ https://your-dapp.com
+[MWA-INJECT] ✅ Chains: solana:mainnet, solana:devnet, solana:testnet, solana:localnet
+[MWA-INJECT] ✅ Wallet type: Local (Android direct connection)
+[MWA-INJECT] ✅ MWA wallet injected successfully!
+```
+
+8. On your phone, tap **Connect Wallet** in your dApp
+9. You should see **"Mobile Wallet Adapter"** in the wallet list
+10. Tap it — your installed wallets (Phantom, Backpack, Solflare) will respond
+
+**Method D (ADB Script) — one command:**
+```bash
+node scripts/inject.mjs --url your-dapp.com
+```
+
+> ⚠️ If your dApp scans for wallets on page load, inject immediately after the page loads or use **Method A (Chrome Extension)** which injects at `document_start` — before any page JavaScript runs.
 ---
 
 ## Quick Start
