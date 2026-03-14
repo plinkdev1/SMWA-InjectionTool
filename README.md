@@ -24,6 +24,30 @@
 
 ---
 
+## 💎 Platinum Sponsors
+
+<p align="center">
+  <i>Do you want your logo here? <a href="https://github.com/sponsors/plinkdev1">Click here and choose a tier!</a></i>
+</p>
+
+---
+
+## 🥇 Gold Sponsors
+
+<p align="center">
+  <i>Do you want your logo here? <a href="https://github.com/sponsors/plinkdev1">Click here and choose a tier!</a></i>
+</p>
+
+---
+
+## 🥈 Silver Sponsors
+
+<p align="center">
+  <i>Do you want your logo here? <a href="https://github.com/sponsors/plinkdev1">Click here and choose a tier!</a></i>
+</p>
+
+---
+
 ## What Is This?
 
 When QA engineers and developers test Mobile Wallet Adapter (MWA) compatibility, they face a core problem: **standard websites browsed via Android Chrome do not automatically inject the MWA wallet interface.** You either have to modify the target website, or use a special wallet browser — both options create friction and slow down testing.
